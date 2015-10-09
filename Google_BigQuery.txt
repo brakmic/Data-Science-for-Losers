@@ -1,5 +1,6 @@
 //this is the query to select comments from a reddit table
 //adjust the FROM part when using a different table (this one is for August 2015)
+//URL: https://bigquery.cloud.google.com/table/fh-bigquery:reddit_comments.2015_05
 
 SELECT author, name, body comment, created_utc created, AVG(score) avg_score, UNIQUE(subreddit) subr, controversiality, distinguished, downs, ups,
     FIRST('http://reddit.com/r/'+subreddit+'/comments/'+REGEXP_REPLACE(link_id, 't[0-9]_','')+'/c/'+id) url

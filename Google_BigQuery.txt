@@ -1,0 +1,10 @@
+//this is the query to select comments from a reddit table
+//adjust the FROM part when using a different table (this one is for August 2015)
+
+SELECT author, name, body comment, created_utc created, AVG(score) avg_score, UNIQUE(subreddit) subr, controversiality, distinguished, downs, ups,
+    FIRST('http://reddit.com/r/'+subreddit+'/comments/'+REGEXP_REPLACE(link_id, 't[0-9]_','')+'/c/'+id) url
+    FROM [fh-bigquery:reddit_comments.2015_08]
+    WHERE author NOT IN (SELECT author FROM [fh-bigquery:reddit_comments.bots_201505])
+    AND subreddit IN (SELECT subreddit FROM [fh-bigquery:reddit_comments.subr_rank_201505] WHERE authors>10000)
+    GROUP BY created, author, name, controversiality, distinguished, comment, downs, ups
+    LIMIT 10000
